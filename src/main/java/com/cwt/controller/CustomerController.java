@@ -58,7 +58,11 @@ public class CustomerController {
 
 		return customerRepository.save(customer);
 	}
+	@PostMapping("/createCustomerController")
+	public ResponseEntity<Customer> createCustomerController(@Valid @RequestBody Customer customer) {
 
+		 return new ResponseEntity<Customer>(customer, HttpStatus.CREATED);
+	}
 	@PostMapping("/create")
 	public ResponseEntity<?> create(@Valid @RequestBody Customer customer, BindingResult bindingResult) {
 		Map<String, String> validationMap = validatorService.validate(bindingResult);
@@ -92,7 +96,12 @@ public class CustomerController {
 		return ResponseEntity.ok("Customer record is deleted.");
 
 	}
-
+	@DeleteMapping(value = "/deleteCustomerController/{id}")
+	public ResponseEntity<HttpStatus> removeEmployee (@PathVariable("id") Long id)
+	{
+	    //code
+	    return new ResponseEntity<HttpStatus>(HttpStatus.ACCEPTED);
+	}
 	@DeleteMapping(value = "/deleteCustomer/{customer}")
 	public ResponseEntity<String> deleteByCustomer(@RequestBody @Valid Customer customer) {
 		customerService.deleteByCustomer(customer);
