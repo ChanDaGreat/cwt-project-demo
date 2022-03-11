@@ -1,0 +1,19 @@
+node{
+  stage('SCM Checkout') {
+  git 'https://github.com/ChanDaGreat/cwt-project-demo'
+  
+  }
+  stage('Compile-package'){
+    def mvnHome= toolname:'maven-3', type:'maven'
+    sh "${mvnHome}/bin/mvn package"
+  }
+  stage('SonarQube Analysis'){
+  def mvnHome= toolname:'maven-3', type:'maven'
+  withSonarQubeEnv('sonar-9'){
+      sh "${mvnHome}/bin/mvn sonar:sonar"
+    }
+  }
+
+
+  
+}
