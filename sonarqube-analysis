@@ -1,7 +1,7 @@
 pipeline{
     agent any
     environment {
-        PATH = "$PATH:/C:\Users\collabera\Desktop\apache-maven-3.8.4"
+        PATH = "$PATH:%MAVEN_HOME%\bin"
     }
     stages{
        stage('GetCode'){
