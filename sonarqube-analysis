@@ -1,19 +1,29 @@
-node{
-  stage('SCM Checkout') {
-  git 'https://github.com/ChanDaGreat/cwt-project-demo'
-  
-  }
-  stage('Compile-package'){
-    def mvnHome= toolname:'maven-3', type:'maven'
-    sh "${mvnHome}/bin/mvn package"
-  }
-  stage('SonarQube Analysis'){
-  def mvnHome= toolname:'maven-3', type:'maven'
-  withSonarQubeEnv('sonar-9'){
-      sh "${mvnHome}/bin/mvn sonar:sonar"
+pipeline{
+    agent any
+    environment {
+        PATH = "$PATH:/C:\Users\collabera\Desktop\apache-maven-3.8.4"
     }
-  }
-
-
-  
+    stages{
+       stage('GetCode'){
+            steps{
+                git 'https://github.com/ravdy/javaloginapp.git'
+            }
+         }        
+       stage('Build'){
+            steps{
+                sh 'mvn clean package'
+            }
+         }
+        stage('SonarQube analysis') {
+//    def scannerHome = tool 'SonarScanner 4.0';
+        steps{
+        withSonarQubeEnv('sonarqube-8.9') { 
+        // If you have configured more than one global server connection, you can specify its name
+//      sh "${scannerHome}/bin/sonar-scanner"
+        sh "mvn sonar:sonar"
+    }
+        }
+        }
+       
+    }
 }
